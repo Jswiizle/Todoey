@@ -10,10 +10,21 @@ import UIKit
 
 class ToDoViewController: UITableViewController {
 
-    let itemArray = ["Check once", "check twice", "Four times"]
+
+    var itemArray = ["First", "Second", "Third"]
+    
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        if let items = userDefaults.array(forKey: "ToDoListArray") as? [String] {
+        
+        itemArray = items
+        
+        }
+        
 
     }
 
@@ -51,5 +62,38 @@ class ToDoViewController: UITableViewController {
         
     }
 
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Quit being a bitch", message: "Just do this shit", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            
+            // What happens when user clicks add item button?
+            self.itemArray.append(textField.text!)
+            
+            self.userDefaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            self.tableView.reloadData()
+            
+            
+        }
+        
+        alert.addTextField { (alertTextfield) in
+            
+            alertTextfield.placeholder = "Pussy"
+            textField =  alertTextfield
+            
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
 }
+
 
